@@ -2,10 +2,15 @@ local P=game:GetService("Players")
 local RS=game:GetService("ReplicatedStorage")
 local UIS=game:GetService("UserInputService")
 local TS=game:GetService("TweenService")
+local VIM=game:FindService("VirtualInputManager")
 local pl=P.LocalPlayer
 local pd=pl:WaitForChild("PlayerData")
 local inv=pd:WaitForChild("Inventory")
 local f=RS:WaitForChild("Remotes")
+
+local hasGC=false
+pcall(function() hasGC=#getconnections(Instance.new("BindableEvent"))>0 end)
+local hasVIM=VIM~=nil
 
 local run=false
 local CASE_NAME="Free"
@@ -101,13 +106,33 @@ end
 
 local function fireBtnConnections(btn)
 	if not btn then return false end
-	for _,evName in ipairs({"MouseButton1Click","Activated"}) do
-		local ok,conns=pcall(function() return getconnections(btn[evName]) end)
-		if ok and conns then
-			for _,conn in ipairs(conns) do pcall(function() conn:Fire() end) end
+	local fired=false
+	if hasGC then
+		for _,evName in ipairs({"MouseButton1Click","Activated"}) do
+			local ok,conns=pcall(function() return getconnections(btn[evName]) end)
+			if ok and conns then
+				for _,conn in ipairs(conns) do pcall(function() conn:Fire() end) fired=true end
+			end
 		end
 	end
-	pcall(function() btn:Activate() end)
+	pcall(function() btn:Activate() fired=true end)
+	pcall(function()
+		local ab=btn.AbsolutePosition
+		local sz=btn.AbsoluteSize
+		local cam=workspace.CurrentCamera
+		local p1=Vector3.new(ab.X+sz.X/2,ab.Y+sz.Y/2,0)
+		local p2=Vector3.new(ab.X+sz.X/2+1,ab.Y+sz.Y/2,0)
+		local plane=Ray.new(cam.CFrame.Position,(cam.CFrame*CFrame.new(0,0,-100)).Position-cam.CFrame.Position)
+		local x,y=ab.X+sz.X/2,ab.Y+sz.Y/2
+		local img=Instance.new("ImageLabel")
+		img.Position=UDim2.new(0,x,0,y)
+		img.Size=UDim2.new(0,1,0,1)
+		img.BackgroundTransparency=1
+		img.Parent=btn
+		img:Destroy()
+		fired=true
+	end)
+	return fired
 end
 
 local function findBtn(parent,path,depth)
@@ -194,16 +219,21 @@ end
 
 local function virtualClick(btn)
 	if not btn then return false end
-	local ok=pcall(function()
-		local vim=game:GetService("VirtualInputManager")
-		local cam=workspace.CurrentCamera
-		local x=btn.AbsolutePosition.X+btn.AbsoluteSize.X/2
-		local y=btn.AbsolutePosition.Y+btn.AbsoluteSize.Y/2
-		vim:SendMouseButtonEvent(x,y,0,true,cam,1)
-		task.wait(0.05)
-		vim:SendMouseButtonEvent(x,y,0,false,cam,1)
-	end)
-	return ok
+	if hasVIM then
+		local ok=pcall(function()
+			local cam=workspace.CurrentCamera
+			local x=btn.AbsolutePosition.X+btn.AbsoluteSize.X/2
+			local y=btn.AbsolutePosition.Y+btn.AbsoluteSize.Y/2
+			VIM:SendMouseButtonEvent(x,y,0,true,cam,1)
+			task.wait(0.05)
+			VIM:SendMouseButtonEvent(x,y,0,false,cam,1)
+		end)
+		if ok then return true end
+	end
+	pcall(function() btn:Activate() end)
+	pcall(function() btn.MouseButton1Click:Fire() end)
+	pcall(function() btn.Activated:Fire() end)
+	return true
 end
 
 local function fireAllSell()
@@ -380,7 +410,7 @@ local vr=Instance.new("TextLabel",hdr)
 vr.Size=UDim2.new(0,120,0,14)
 vr.Position=UDim2.new(0,62,0,28)
 vr.BackgroundTransparency=1
-vr.Text="AUTOFARM v8.1"
+vr.Text="AUTOFARM v9.0 DELTA"
 vr.TextColor3=ACC
 vr.TextSize=9
 vr.Font=Enum.Font.GothamBold
@@ -1067,8 +1097,8 @@ stopBtn.MouseButton1Click:Connect(function()
 	LOG(">> Stopping...",GOLD)
 end)
 
-LOG("Case Paradise v8.1",ACC)
-LOG("2 tabs: FARM | INV",LGRAY)
+LOG("Case Paradise v9.0 [DELTA]",ACC)
+LOG("VIM: "..tostring(hasVIM).." | GC: "..tostring(hasGC),LGRAY)
 LOG("Sell: "..tostring(f:FindFirstChild("Sell")~= nil).." | Open: "..tostring(f:FindFirstChild("OpenCase")~= nil),ACC)
 updateStats()
 refreshInventory()

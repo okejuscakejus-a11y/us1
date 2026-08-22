@@ -1,12 +1,12 @@
-local P=game:GetService("Players")
-local RS=game:GetService("ReplicatedStorage")
-local UIS=game:GetService("UserInputService")
-local TS=game:GetService("TweenService")
-local VIM=game:FindService("VirtualInputManager")
+local P=game:GetService("Pla")
+local RS=game:GetService("Replica")
+local UIS=")
+local TS=game:GetService("Tween")
+local VIM=game:FindService("VirtualInp)
 local pl=P.LocalPlayer
-local pd=pl:WaitForChild("PlayerData")
+local pd=pl:WaitForChild("P
 local inv=pd:WaitForChild("Inventory")
-local f=RS:WaitForChild("Remotes")
+local f=RS:WaitForChild("Re
 
 local hasGC=false
 pcall(function() hasGC=#getconnections(Instance.new("BindableEvent"))>0 end)

@@ -364,8 +364,8 @@ local cases={
 
 local m=Instance.new("Frame",sg)
 m.Name="Main"
-m.Size=UDim2.new(0,480,0,580)
-m.Position=UDim2.new(0.5,-240,0.5,-290)
+m.Size=UDim2.new(0,360,0,440)
+m.Position=UDim2.new(0.5,-180,0.5,-220)
 m.BackgroundColor3=BG
 m.BorderSizePixel=0
 m.Active=true
@@ -376,43 +376,31 @@ CR(m,14)
 ST(m,ACC,2)
 m.Size=UDim2.new(0,0,0,0)
 m.Position=UDim2.new(0.5,0,0.5,0)
-TW(m,{Size=UDim2.new(0,480,0,580),Position=UDim2.new(0.5,-240,0.5,-290),BackgroundTransparency=0},0.5)
+TW(m,{Size=UDim2.new(0,360,0,440),Position=UDim2.new(0.5,-180,0.5,-220),BackgroundTransparency=0},0.5)
 
 local hdr=Instance.new("Frame",m)
-hdr.Size=UDim2.new(1,0,0,52)
+hdr.Size=UDim2.new(1,0,0,40)
 hdr.BackgroundColor3=Color3.fromRGB(10,10,18)
 hdr.BorderSizePixel=0
 CR(hdr,14)
 
-local ico=Instance.new("TextLabel",hdr)
-ico.Size=UDim2.new(0,44,0,44)
-ico.Position=UDim2.new(0,12,0,4)
-ico.BackgroundColor3=Color3.fromRGB(30,60,45)
-ico.BorderSizePixel=0
-ico.Text="CS"
-ico.TextColor3=ACC
-ico.TextSize=18
-ico.Font=Enum.Font.GothamBlack
-CR(ico,10)
-ST(ico,ACC,1)
-
 local ttl=Instance.new("TextLabel",hdr)
-ttl.Size=UDim2.new(0,200,0,20)
-ttl.Position=UDim2.new(0,62,0,8)
+ttl.Size=UDim2.new(0,180,0,20)
+ttl.Position=UDim2.new(0,12,0,5)
 ttl.BackgroundTransparency=1
 ttl.Text="CASE PARADISE"
 ttl.TextColor3=WHITE
-ttl.TextSize=16
+ttl.TextSize=14
 ttl.Font=Enum.Font.GothamBlack
 ttl.TextXAlignment=Enum.TextXAlignment.Left
 
 local vr=Instance.new("TextLabel",hdr)
-vr.Size=UDim2.new(0,120,0,14)
-vr.Position=UDim2.new(0,62,0,28)
+vr.Size=UDim2.new(1,-80,0,12)
+vr.Position=UDim2.new(0,12,0,23)
 vr.BackgroundTransparency=1
-vr.Text="AUTOFARM v9.0 DELTA"
+vr.Text="AUTOFARM v9.0  [F1=Show  F2=Start  F3=Stop]"
 vr.TextColor3=ACC
-vr.TextSize=9
+vr.TextSize=7
 vr.Font=Enum.Font.GothamBold
 vr.TextXAlignment=Enum.TextXAlignment.Left
 
@@ -432,24 +420,31 @@ local function hBtn(txt,pos,bg,hv)
 	return b
 end
 
-hBtn("X",UDim2.new(1,-42,0,10),RED,Color3.fromRGB(255,80,80)).MouseButton1Click:Connect(function()
+hBtn("X",UDim2.new(1,-38,0,5),RED,Color3.fromRGB(255,80,80)).MouseButton1Click:Connect(function()
 	run=false
-	TW(m,{Size=UDim2.new(0,480,0,0),Position=UDim2.new(0.5,-240,0.5,0),BackgroundTransparency=1},0.3)
+	TW(m,{Size=UDim2.new(0,360,0,0),Position=UDim2.new(0.5,-180,0.5,0),BackgroundTransparency=1},0.3)
 	task.wait(0.3)
 	sg:Destroy()
 end)
-hBtn("-",UDim2.new(1,-80,0,10),BG4,Color3.fromRGB(80,80,110)).MouseButton1Click:Connect(function()
-	TW(m,{Size=UDim2.new(0,480,0,52)},0.2)
+hBtn("-",UDim2.new(1,-72,0,5),BG4,Color3.fromRGB(80,80,110)).MouseButton1Click:Connect(function()
+	TW(m,{Size=UDim2.new(0,360,0,40)},0.2)
 end)
 UIS.InputBegan:Connect(function(i,gp)
-	if not gp and i.KeyCode==Enum.KeyCode.RightShift then m.Visible=not m.Visible end
+	if gp then return end
+	if i.KeyCode==Enum.KeyCode.F1 then
+		m.Visible=not m.Visible
+	elseif i.KeyCode==Enum.KeyCode.F2 then
+		if not run then startBtn:Activate() end
+	elseif i.KeyCode==Enum.KeyCode.F3 then
+		if run then stopBtn:Activate() end
+	end
 end)
 local tBar=Instance.new("Frame",m)
-tBar.Size=UDim2.new(1,-24,0,34)
-tBar.Position=UDim2.new(0,12,0,58)
+tBar.Size=UDim2.new(1,-16,0,28)
+tBar.Position=UDim2.new(0,8,0,44)
 tBar.BackgroundColor3=BG2
 tBar.BorderSizePixel=0
-CR(tBar,10)
+CR(tBar,8)
 
 local function makeTab(txt,pos,col)
 	local b=Instance.new("TextButton",tBar)
@@ -469,15 +464,15 @@ local tF=makeTab("FARM",UDim2.new(0.01,0,3),ACC)
 local tI=makeTab("INV",UDim2.new(0.51,0,3),BG4)
 
 local fC=Instance.new("Frame",m)
-fC.Size=UDim2.new(1,-24,0,430)
-fC.Position=UDim2.new(0,12,0,96)
+fC.Size=UDim2.new(1,-16,0,330)
+fC.Position=UDim2.new(0,8,0,76)
 fC.BackgroundTransparency=1
 fC.ClipsDescendants=true
 fC.Visible=true
 
 local iC=Instance.new("Frame",m)
-iC.Size=UDim2.new(1,-24,0,430)
-iC.Position=UDim2.new(0,12,0,96)
+iC.Size=UDim2.new(1,-16,0,330)
+iC.Position=UDim2.new(0,8,0,76)
 iC.BackgroundTransparency=1
 iC.ClipsDescendants=true
 iC.Visible=false
@@ -499,52 +494,52 @@ statsC.BackgroundTransparency=1
 
 local function makeStat(par,nm,pos,col,icon)
 	local card=Instance.new("Frame",par)
-	card.Size=UDim2.new(0,108,0,52)
+	card.Size=UDim2.new(0,78,0,44)
 	card.Position=pos
 	card.BackgroundColor3=BG2
 	card.BorderSizePixel=0
-	CR(card,10)
+	CR(card,8)
 	ST(card,Color3.fromRGB(35,35,55),1)
 	local ab=Instance.new("Frame",card)
-	ab.Size=UDim2.new(1,-16,0,3)
-	ab.Position=UDim2.new(0,8,0,6)
+	ab.Size=UDim2.new(1,-10,0,2)
+	ab.Position=UDim2.new(0,5,0,4)
 	ab.BackgroundColor3=col
 	ab.BackgroundTransparency=0.4
 	CR(ab,2)
 	local il=Instance.new("TextLabel",card)
-	il.Size=UDim2.new(0,22,0,16)
-	il.Position=UDim2.new(0,10,0,14)
+	il.Size=UDim2.new(0,18,0,14)
+	il.Position=UDim2.new(0,6,0,10)
 	il.BackgroundTransparency=1
 	il.Text=icon
 	il.TextColor3=col
-	il.TextSize=12
+	il.TextSize=11
 	il.Font=Enum.Font.GothamBold
 	il.TextXAlignment=Enum.TextXAlignment.Left
 	local nl=Instance.new("TextLabel",card)
-	nl.Size=UDim2.new(1,-36,0,12)
-	nl.Position=UDim2.new(0,30,0,14)
+	nl.Size=UDim2.new(1,-26,0,12)
+	nl.Position=UDim2.new(0,22,0,10)
 	nl.BackgroundTransparency=1
 	nl.Text=nm
 	nl.TextColor3=GRAY
-	nl.TextSize=8
+	nl.TextSize=7
 	nl.Font=Enum.Font.GothamBold
 	nl.TextXAlignment=Enum.TextXAlignment.Left
 	local vl=Instance.new("TextLabel",card)
-	vl.Size=UDim2.new(1,-14,0,20)
-	vl.Position=UDim2.new(0,10,0,30)
+	vl.Size=UDim2.new(1,-10,0,18)
+	vl.Position=UDim2.new(0,6,0,24)
 	vl.BackgroundTransparency=1
 	vl.Text="0"
 	vl.TextColor3=col
-	vl.TextSize=15
+	vl.TextSize=13
 	vl.Font=Enum.Font.GothamBlack
 	vl.TextXAlignment=Enum.TextXAlignment.Left
 	return vl
 end
 
 local balV=makeStat(statsC,"BALANCE",UDim2.new(0,0,0,2),ACC,"$")
-local itemV=makeStat(statsC,"ITEMS",UDim2.new(0,114,0,2),BLUE,"")
-local soldV=makeStat(statsC,"SOLD",UDim2.new(0,228,0,2),GOLD,"")
-local earnV=makeStat(statsC,"EARNED",UDim2.new(0,342,0,2),PURPLE,"$")
+local itemV=makeStat(statsC,"ITEMS",UDim2.new(0,82,0,2),BLUE,"")
+local soldV=makeStat(statsC,"SOLD",UDim2.new(0,164,0,2),GOLD,"")
+local earnV=makeStat(statsC,"EARNED",UDim2.new(0,246,0,2),PURPLE,"$")
 
 local function updateStats()
 	balV.Text="$"..string.format("%.2f",getBal())
@@ -554,8 +549,8 @@ local function updateStats()
 end
 
 local csSec=Instance.new("Frame",fC)
-csSec.Size=UDim2.new(1,0,0,182)
-csSec.Position=UDim2.new(0,0,0,62)
+csSec.Size=UDim2.new(1,0,0,162)
+csSec.Position=UDim2.new(0,0,0,50)
 csSec.BackgroundColor3=BG2
 csSec.BorderSizePixel=0
 CR(csSec,10)
@@ -572,36 +567,36 @@ sTit.Font=Enum.Font.GothamBlack
 sTit.TextXAlignment=Enum.TextXAlignment.Left
 
 local selC=Instance.new("Frame",csSec)
-selC.Size=UDim2.new(1,-28,0,32)
-selC.Position=UDim2.new(0,14,0,26)
+selC.Size=UDim2.new(1,-20,0,26)
+selC.Position=UDim2.new(0,10,0,22)
 selC.BackgroundColor3=BG3
 selC.BorderSizePixel=0
 CR(selC,8)
 local selS=ST(selC,ACC,1.5)
 
 local selN=Instance.new("TextLabel",selC)
-selN.Size=UDim2.new(0,200,1,0)
-selN.Position=UDim2.new(0,14,0,0)
+selN.Size=UDim2.new(0,160,1,0)
+selN.Position=UDim2.new(0,10,0,0)
 selN.BackgroundTransparency=1
 selN.Text="Free"
 selN.TextColor3=ACC
-selN.TextSize=13
+selN.TextSize=11
 selN.Font=Enum.Font.GothamBlack
 selN.TextXAlignment=Enum.TextXAlignment.Left
 
 local selP=Instance.new("TextLabel",selC)
-selP.Size=UDim2.new(0,100,1,0)
-selP.Position=UDim2.new(0,200,0,0)
+selP.Size=UDim2.new(0,80,1,0)
+selP.Position=UDim2.new(0,168,0,0)
 selP.BackgroundTransparency=1
 selP.Text="$0.00"
 selP.TextColor3=LGRAY
-selP.TextSize=12
+selP.TextSize=10
 selP.Font=Enum.Font.GothamBold
 selP.TextXAlignment=Enum.TextXAlignment.Left
 
 local cScr=Instance.new("ScrollingFrame",csSec)
-cScr.Size=UDim2.new(1,-28,0,106)
-cScr.Position=UDim2.new(0,14,0,64)
+cScr.Size=UDim2.new(1,-20,0,96)
+cScr.Position=UDim2.new(0,10,0,54)
 cScr.BackgroundTransparency=1
 cScr.BorderSizePixel=0
 cScr.ScrollBarThickness=3
@@ -609,7 +604,7 @@ cScr.ScrollBarImageColor3=ACC
 cScr.AutomaticCanvasSize=Enum.AutomaticSize.Y
 
 local grd=Instance.new("UIGridLayout",cScr)
-grd.CellSize=UDim2.new(0,72,0,34)
+grd.CellSize=UDim2.new(0,74,0,28)
 grd.CellPadding=UDim2.new(0,4,0,4)
 grd.SortOrder=Enum.SortOrder.LayoutOrder
 
@@ -666,31 +661,31 @@ for i,cs in ipairs(cases) do
 end
 
 local asSec=Instance.new("Frame",fC)
-asSec.Size=UDim2.new(1,0,0,34)
-asSec.Position=UDim2.new(0,0,0,250)
+asSec.Size=UDim2.new(1,0,0,28)
+asSec.Position=UDim2.new(0,0,0,218)
 asSec.BackgroundColor3=BG2
 asSec.BorderSizePixel=0
-CR(asSec,10)
+CR(asSec,8)
 ST(asSec,Color3.fromRGB(35,35,55),1)
 
 local asLbl=Instance.new("TextLabel",asSec)
-asLbl.Size=UDim2.new(0,200,0,34)
-asLbl.Position=UDim2.new(0,14,0,0)
+asLbl.Size=UDim2.new(0,200,0,28)
+asLbl.Position=UDim2.new(0,10,0,0)
 asLbl.BackgroundTransparency=1
 asLbl.Text="AUTO-SELL"
 asLbl.TextColor3=GRAY
-asLbl.TextSize=10
+asLbl.TextSize=9
 asLbl.Font=Enum.Font.GothamBlack
 asLbl.TextXAlignment=Enum.TextXAlignment.Left
 
 local asBtn=Instance.new("TextButton",asSec)
-asBtn.Size=UDim2.new(0,54,0,24)
-asBtn.Position=UDim2.new(1,-68,0.5,-12)
+asBtn.Size=UDim2.new(0,46,0,20)
+asBtn.Position=UDim2.new(1,-56,0.5,-10)
 asBtn.BackgroundColor3=ACC
 asBtn.BorderSizePixel=0
 asBtn.Text="ON"
 asBtn.TextColor3=BG
-asBtn.TextSize=11
+asBtn.TextSize=10
 asBtn.Font=Enum.Font.GothamBlack
 CR(asBtn,6)
 
@@ -700,16 +695,16 @@ asBtn.MouseButton1Click:Connect(function()
 	TW(asBtn,{BackgroundColor3=autoSell and ACC or RED},0.2)
 end)
 local fLog=Instance.new("Frame",fC)
-fLog.Size=UDim2.new(1,0,0,138)
-fLog.Position=UDim2.new(0,0,0,290)
+fLog.Size=UDim2.new(1,0,0,100)
+fLog.Position=UDim2.new(0,0,0,252)
 fLog.BackgroundColor3=BG2
 fLog.BorderSizePixel=0
-CR(fLog,10)
+CR(fLog,8)
 ST(fLog,Color3.fromRGB(35,35,55),1)
 
 local lgTit=Instance.new("TextLabel",fLog)
-lgTit.Size=UDim2.new(0,100,0,16)
-lgTit.Position=UDim2.new(0,14,0,6)
+lgTit.Size=UDim2.new(0,100,0,14)
+lgTit.Position=UDim2.new(0,10,0,4)
 lgTit.BackgroundTransparency=1
 lgTit.Text="LOG"
 lgTit.TextColor3=GRAY
@@ -718,8 +713,8 @@ lgTit.Font=Enum.Font.GothamBlack
 lgTit.TextXAlignment=Enum.TextXAlignment.Left
 
 local flS=Instance.new("ScrollingFrame",fLog)
-flS.Size=UDim2.new(1,-16,0,112)
-flS.Position=UDim2.new(0,8,0,22)
+flS.Size=UDim2.new(1,-12,0,80)
+flS.Position=UDim2.new(0,6,0,18)
 flS.BackgroundTransparency=1
 flS.BorderSizePixel=0
 flS.ScrollBarThickness=3
@@ -769,7 +764,7 @@ sCnt.TextSize=10
 sCnt.Font=Enum.Font.GothamBold
 sCnt.TextXAlignment=Enum.TextXAlignment.Left
 local iScroll=Instance.new("ScrollingFrame",iC)
-iScroll.Size=UDim2.new(1,0,0,356)
+iScroll.Size=UDim2.new(1,0,0,270)
 iScroll.Position=UDim2.new(0,0,0,42)
 iScroll.BackgroundTransparency=1
 iScroll.BorderSizePixel=0
@@ -891,20 +886,20 @@ local function refreshInventory()
 	end
 end
 local iBtn=Instance.new("Frame",iC)
-iBtn.Size=UDim2.new(1,0,0,34)
-iBtn.Position=UDim2.new(0,0,0,402)
+iBtn.Size=UDim2.new(1,0,0,28)
+iBtn.Position=UDim2.new(0,0,0,318)
 iBtn.BackgroundTransparency=1
 local function iB(txt,pos,col)
 	local b=Instance.new("TextButton",iBtn)
-	b.Size=UDim2.new(0,105,0,30)
+	b.Size=UDim2.new(0,96,0,24)
 	b.Position=pos
 	b.BackgroundColor3=col
 	b.BorderSizePixel=0
 	b.Text=txt
 	b.TextColor3=BG
-	b.TextSize=10
+	b.TextSize=9
 	b.Font=Enum.Font.GothamBlack
-	CR(b,8)
+	CR(b,7)
 	b.MouseEnter:Connect(function() TW(b,{BackgroundColor3=WHITE},0.15) end)
 	b.MouseLeave:Connect(function() TW(b,{BackgroundColor3=col},0.15) end)
 	return b
@@ -930,7 +925,7 @@ iB("SELL ALL",UDim2.new(0,0,0,2),ACC).MouseButton1Click:Connect(function()
 	refreshInventory()
 	updateStats()
 end)
-iB("SELL SELECTED",UDim2.new(0,110,0,2),BLUE).MouseButton1Click:Connect(function()
+iB("SELL SELECTED",UDim2.new(0,100,0,2),BLUE).MouseButton1Click:Connect(function()
 	local cnt=0
 	for _ in pairs(selItems) do cnt=cnt+1 end
 	if cnt==0 then LOG("No selection",GRAY) return end
@@ -944,55 +939,55 @@ iB("SELL SELECTED",UDim2.new(0,110,0,2),BLUE).MouseButton1Click:Connect(function
 	refreshInventory()
 	updateStats()
 end)
-iB("REFRESH",UDim2.new(0,250,0,2),GOLD).MouseButton1Click:Connect(function() refreshInventory() end)
+iB("REFRESH",UDim2.new(0,204,0,2),GOLD).MouseButton1Click:Connect(function() refreshInventory() end)
 
 
 local bot=Instance.new("Frame",m)
-bot.Size=UDim2.new(1,0,0,58)
-bot.Position=UDim2.new(0,0,1,-58)
+bot.Size=UDim2.new(1,0,0,46)
+bot.Position=UDim2.new(0,0,1,-46)
 bot.BackgroundColor3=Color3.fromRGB(10,10,18)
 bot.BorderSizePixel=0
 CR(bot,14)
 
 local startBtn=Instance.new("TextButton",bot)
-startBtn.Size=UDim2.new(0,150,0,38)
-startBtn.Position=UDim2.new(0,14,0.5,-19)
+startBtn.Size=UDim2.new(0,120,0,30)
+startBtn.Position=UDim2.new(0,10,0.5,-15)
 startBtn.BackgroundColor3=ACC
 startBtn.BorderSizePixel=0
-startBtn.Text="START"
+startBtn.Text="START [F2]"
 startBtn.TextColor3=BG
-startBtn.TextSize=15
+startBtn.TextSize=11
 startBtn.Font=Enum.Font.GothamBlack
-CR(startBtn,10)
+CR(startBtn,8)
 
 local stopBtn=Instance.new("TextButton",bot)
-stopBtn.Size=UDim2.new(0,150,0,38)
-stopBtn.Position=UDim2.new(0,172,0.5,-19)
+stopBtn.Size=UDim2.new(0,110,0,30)
+stopBtn.Position=UDim2.new(0,138,0.5,-15)
 stopBtn.BackgroundColor3=RED
 stopBtn.BorderSizePixel=0
-stopBtn.Text="STOP"
+stopBtn.Text="STOP [F3]"
 stopBtn.TextColor3=WHITE
-stopBtn.TextSize=15
+stopBtn.TextSize=11
 stopBtn.Font=Enum.Font.GothamBlack
-CR(stopBtn,10)
+CR(stopBtn,8)
 
 local titL=Instance.new("TextLabel",bot)
-titL.Size=UDim2.new(0,130,0,22)
-titL.Position=UDim2.new(1,-145,0,4)
+titL.Size=UDim2.new(0,100,0,18)
+titL.Position=UDim2.new(1,-108,0,3)
 titL.BackgroundTransparency=1
 titL.Text="CASE PARADISE"
 titL.TextColor3=ACC
-titL.TextSize=13
+titL.TextSize=10
 titL.Font=Enum.Font.GothamBlack
 titL.TextXAlignment=Enum.TextXAlignment.Right
 
 local timeL=Instance.new("TextLabel",bot)
-timeL.Size=UDim2.new(0,130,0,16)
-timeL.Position=UDim2.new(1,-145,0,26)
+timeL.Size=UDim2.new(0,100,0,14)
+timeL.Position=UDim2.new(1,-108,0,22)
 timeL.BackgroundTransparency=1
 timeL.Text="00:00:00"
 timeL.TextColor3=GRAY
-timeL.TextSize=10
+timeL.TextSize=9
 timeL.Font=Enum.Font.Code
 timeL.TextXAlignment=Enum.TextXAlignment.Right
 
@@ -1004,7 +999,7 @@ stopBtn.MouseLeave:Connect(function() TW(stopBtn,{BackgroundColor3=RED},0.15) en
 startBtn.MouseButton1Click:Connect(function()
 	if run then return end
 	run=true
-	startBtn.Text="RUNNING"
+	startBtn.Text="RUNNING..."
 	TW(startBtn,{BackgroundColor3=Color3.fromRGB(80,130,60)},0.2)
 	LOG(">> Start | Case: "..CASE_NAME.." | Sell: "..(autoSell and "ON" or "OFF"),ACC)
 	startTime=os.time()
@@ -1013,7 +1008,7 @@ startBtn.MouseButton1Click:Connect(function()
 	totalEarned=0
 	sellFailCount=0
 	local oc=f:FindFirstChild("OpenCase")
-	if not oc then LOG("ERROR: OpenCase not found!",RED) run=false startBtn.Text="START" TW(startBtn,{BackgroundColor3=ACC},0.2) return end
+	if not oc then LOG("ERROR: OpenCase not found!",RED) run=false startBtn.Text="START [F2]" TW(startBtn,{BackgroundColor3=ACC},0.2) return end
 	while run do
 		if oc then
 			local cdLeft=getCooldown()
@@ -1087,7 +1082,7 @@ startBtn.MouseButton1Click:Connect(function()
 		updateStats()
 	end
 	LOG(">> Stop | Cases: "..rounds.." Sold: "..soldCount,RED)
-	startBtn.Text="START"
+	startBtn.Text="START [F2]"
 	TW(startBtn,{BackgroundColor3=ACC},0.2)
 	updateStats()
 end)
